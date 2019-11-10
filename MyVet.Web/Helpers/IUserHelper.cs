@@ -7,19 +7,23 @@ namespace MyVet.Web.Helpers
 {
     public interface IUserHelper
     {
-        Task<User> GetUserByEmailAsync(string email);
+        Task AddUserToRoleAsync(User user, string roleName);
 
         Task<IdentityResult> AddUserAsync(User user, string password);
 
         Task CheckRoleAsync(string roleName);
 
-        Task AddUserToRoleAsync(User user, string roleName);
+        Task<bool> DeleteUserAsync(string email);
+
+        Task<User> GetUserByEmailAsync(string email);
 
         Task<bool> IsUserInRoleAsync(User user, string roleName);
 
         Task<SignInResult> LoginAsync(LoginViewModel model);
 
         Task LogoutAsync();
+
+        Task<IdentityResult> UpdateUserAsync(User user);
 
     }
 }
