@@ -9,7 +9,7 @@ namespace MyVet.Web.Data.Entities
 
         [Display(Name = "Date")]
         [Required(ErrorMessage = "The field {0} is mandatory.")]
-        [DataType(DataType.DateTime)]
+        //[DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd H:mm tt}", ApplyFormatInEditMode = true)]
         public DateTime Date { get; set; }
 
