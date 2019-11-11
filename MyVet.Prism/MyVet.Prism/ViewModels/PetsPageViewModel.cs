@@ -36,7 +36,7 @@ namespace MyVet.Prism.ViewModels
             if (parameters.ContainsKey("owner"))
             {
                 _owner = parameters.GetValue<OwnerResponse>("owner");
-                Title = $"Hi {_owner.FirstName}";
+                Title = $"{_owner.FullName}";
 
                 Pets = new ObservableCollection<PetItemViewModel>(
                     _owner.Pets.Select(p => new PetItemViewModel(_navigationService) 

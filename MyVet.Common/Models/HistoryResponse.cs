@@ -12,6 +12,8 @@ namespace MyVet.Common.Models
 
         public DateTime Date { get; set; }
 
+        public DateTime DateLocal => this.Date.ToLocalTime();
+
         public string Remarks { get; set; }
     }
 }

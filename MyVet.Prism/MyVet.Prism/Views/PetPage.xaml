@@ -8,7 +8,7 @@
              Title="{Binding Title}">
 
     <ScrollView>
-    <StackLayout
+        <StackLayout
         Padding="10">
         <ffimageloading:CachedImage
             Aspect="AspectFit"
