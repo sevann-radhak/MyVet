@@ -1,7 +1,7 @@
-﻿@model IEnumerable<MyVet.Web.Data.Entities.Owner>
+﻿@model IEnumerable<MyVet.Web.Data.Entities.Agenda>
 
 @{
-    ViewData["Title"] = "Owners";
+    ViewData["Title"] = "Agenda";
 }
 
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
@@ -15,32 +15,20 @@
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">Owners</h3>
+                <h3 class="panel-title">Agenda</h3>
             </div>
             <div class="panel-body">
-                <table class="table table-hover table-responsive table-striped" id="OwnersTable">
+                <table class="table table-hover table-responsive table-striped" id="AgendaTable">
                     <thead>
                         <tr>
                             <th>
-                                @Html.DisplayNameFor(model => model.FirstOrDefault().User.Document)
+                                @Html.DisplayNameFor(model => model.Date)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.FirstOrDefault().User.FirstName)
+                                @Html.DisplayNameFor(model => model.Remarks)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.FirstOrDefault().User.LastName)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.FirstOrDefault().User.Address)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.FirstOrDefault().User.Email)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.FirstOrDefault().User.PhoneNumber)
-                            </th>
-                            <th>
-                                Pets
+                                @Html.DisplayNameFor(model => model.IsAvailable)
                             </th>
                             <th></th>
                         </tr>
@@ -50,25 +38,13 @@
                         {
                             <tr>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.User.Document)
+                                    @Html.DisplayFor(modelItem => item.Date)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.User.FirstName)
+                                    @Html.DisplayFor(modelItem => item.Remarks)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.User.LastName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.User.Address)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.User.Email)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.User.PhoneNumber)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Pets.Count)
+                                    @Html.DisplayFor(modelItem => item.IsAvailable)
                                 </td>
                                 <td>
                                     <a asp-action="Edit" class="btn btn-default" asp-route-id="@item.Id"><i class="glyphicon glyphicon-pencil"></i> </a>
@@ -93,7 +69,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#OwnersTable').DataTable();
+            $('#AgendaTable').DataTable();
 
             // Delete item
             var item_to_delete;
@@ -103,7 +79,7 @@
             });
 
             $("#btnYesDelete").click(function () {
-                window.location.href = `/Owners/Delete/${item_to_delete}`;
+                window.location.href = `/Agenda/Delete${item_to_delete}`;
             });
         });
     </script>

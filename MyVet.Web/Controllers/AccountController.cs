@@ -173,7 +173,7 @@ namespace MyVet.Web.Controllers
                     });
 
                 return RedirectToAction("Index", "Home");
-                //return View(model);
+                //return View(model);+
             }
 
             return View(model);
