@@ -20,19 +20,22 @@ namespace MyVet.Web.Controllers
         private readonly ICombosHelper _combosHelper;
         private readonly IConverterHelper _converterHelper;
         private readonly IImageHelper _imageHelper;
+        private readonly IMailHelper _mailHelper;
 
         public OwnersController(
             DataContext context,
             IUserHelper userHelper,
             ICombosHelper combosHelper,
             IConverterHelper converterHelper,
-            IImageHelper imageHelper)
+            IImageHelper imageHelper,
+            IMailHelper mailHelper)
         {
             _dataContext = context;
             _userHelper = userHelper;
             _combosHelper = combosHelper;
             _converterHelper = converterHelper;
             _imageHelper = imageHelper;
+            _mailHelper = mailHelper;
         }
 
         // GET: Owners
@@ -93,7 +96,7 @@ namespace MyVet.Web.Controllers
                     UserName = model.Username
                 };
 
-                Microsoft.AspNetCore.Identity.IdentityResult response = await _userHelper.AddUserAsync(user, model.Password);
+                var response = await _userHelper.AddUserAsync(user, model.Password);
 
                 if (response.Succeeded)
                 {
@@ -112,6 +115,22 @@ namespace MyVet.Web.Controllers
                     try
                     {
                         await _dataContext.SaveChangesAsync();
+
+                        //var myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+                        //var tokenLink = Url.Action("ConfirmEmail", "Account", new
+                        //{
+                        //    userid = user.Id,
+                        //    token = myToken
+                        //}, protocol: HttpContext.Request.Scheme);
+
+                        //_mailHelper.SendMail(model.Username, "Email confirmation", $"<h1>Email Confirmation</h1>" +
+                        //    $"To allow the user, " +
+                        //    $"plase click in this link:</br></br><a href = \"{tokenLink}\">Confirm Email</a>");
+
+                        //TODO: Activate send email (security)
+                        var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+                        await _userHelper.ConfirmEmailAsync(user, token);
+
                         return RedirectToAction(nameof(Index));
                     }
                     catch (Exception ex)
@@ -198,14 +217,14 @@ namespace MyVet.Web.Controllers
                 return NotFound();
             }
 
-            if(owner.Pets.Count > 0)
+            if (owner.Pets.Count > 0)
             {
                 ModelState.AddModelError(string.Empty, "The owner can not be deleted because it has related records");
                 return RedirectToAction(nameof(Index));
             }
 
             // Delete the user ASP and model user
-            await _userHelper.DeleteUserAsync(owner.User.Email);           
+            await _userHelper.DeleteUserAsync(owner.User.Email);
 
             _dataContext.Owners.Remove(owner);
             await _dataContext.SaveChangesAsync();
@@ -450,7 +469,7 @@ namespace MyVet.Web.Controllers
                 return NotFound();
             }
 
-            if(pet.Histories.Count > 0)
+            if (pet.Histories.Count > 0)
             {
                 ModelState.AddModelError(string.Empty, "Pet can not be deleted because it has related records");
                 return RedirectToAction($"{nameof(Details)}/{pet.Owner.Id}");

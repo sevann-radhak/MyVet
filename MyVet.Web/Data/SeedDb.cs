@@ -10,6 +10,10 @@ namespace MyVet.Web.Data
     {
         private readonly DataContext _dataContext;
         private readonly IUserHelper _userHelper;
+        private User _customer1;
+        private User _customer2;
+        private User _customer3;
+        private User _customer4;
 
         public SeedDb(
             DataContext context,
@@ -23,11 +27,14 @@ namespace MyVet.Web.Data
         {
             await _dataContext.Database.EnsureCreatedAsync();
             await CheckRoles();
-            var manager = await CheckUserAsync("1010", "Juan", "Zuluaga", "jzuluaga55@gmail.com", "350 634 2747", "Calle Luna Calle Sol", "Admin");
-            var customer = await CheckUserAsync("2020", "Juan", "Zuluaga", "jzuluaga55@hotmail.com", "350 634 2747", "Calle Luna Calle Sol", "Customer");
+            var manager = await CheckUserAsync("1010", "Sevann", "Radhak", "sevann.radhak@gmail.com", "54 9 111 73627795", "Santiago del Estero 690", "Admin");
+            _customer1 = await CheckUserAsync("2020", "Homero", "Simpson", "homero@correo.com", string.Empty, "Av. Siempreviva 742", "Customer");
+            _customer2 = await CheckUserAsync("3030", "Bart", "Simpson", "bart@correo.com", string.Empty, "Av. Siempreviva 742", "Customer");
+            _customer3 = await CheckUserAsync("4040", "Lisa", "Simpson", "lisa@correo.com", string.Empty, "Av. Siempreviva 742", "Customer");
+            _customer4 = await CheckUserAsync("5050", "Maggie", "Simpson", "maggie@correo.com", string.Empty, "Av. Siempreviva 742", "Customer");
             await CheckPetTypesAsync();
             await CheckServiceTypesAsync();
-            await CheckOwnerAsync(customer);
+            await CheckOwnerAsync();
             await CheckManagerAsync(manager);
             await CheckPetsAsync();
             await CheckAgendasAsync();
@@ -57,6 +64,9 @@ namespace MyVet.Web.Data
 
                 await _userHelper.AddUserAsync(user, "123456");
                 await _userHelper.AddUserToRoleAsync(user, role);
+
+                var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+                await _userHelper.ConfirmEmailAsync(user, token);
             }
 
             return user;
@@ -95,11 +105,14 @@ namespace MyVet.Web.Data
             }
         }
 
-        private async Task CheckOwnerAsync(User user)
+        private async Task CheckOwnerAsync()
         {
             if (!_dataContext.Owners.Any())
             {
-                _dataContext.Owners.Add(new Owner { User = user });
+                _dataContext.Owners.Add(new Owner { User = _customer1});
+                _dataContext.Owners.Add(new Owner { User = _customer2 });
+                _dataContext.Owners.Add(new Owner { User = _customer3 });
+                _dataContext.Owners.Add(new Owner { User = _customer4 });
                 await _dataContext.SaveChangesAsync();
             }
         }
@@ -121,7 +134,10 @@ namespace MyVet.Web.Data
                 Name = name,
                 Owner = owner,
                 PetType = petType,
-                Race = race
+                Race = race,
+                Remarks = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. " +
+                "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, " +
+                "when an unknown printer took a galley of type and scrambled it to make a type specimen book."
             });
         }
 
