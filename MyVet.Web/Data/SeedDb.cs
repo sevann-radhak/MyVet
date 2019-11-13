@@ -37,7 +37,7 @@ namespace MyVet.Web.Data
             await CheckOwnerAsync();
             await CheckManagerAsync(manager);
             await CheckPetsAsync();
-            await CheckAgendasAsync();
+            //await CheckAgendasAsync();
         }
 
         private async Task CheckRoles()
