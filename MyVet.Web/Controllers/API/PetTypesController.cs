@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyVet.Web.Data;
 using MyVet.Web.Data.Entities;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MyVet.Web.Controllers.API
 {
@@ -24,7 +25,7 @@ namespace MyVet.Web.Controllers.API
         [HttpGet]
         public IEnumerable<PetType> GetPetTypes()
         {
-            return _context.PetTypes;
+            return _context.PetTypes.OrderBy(pt => pt.Name);
         }
     }
 }

@@ -195,10 +195,11 @@ namespace MyVet.Web.Controllers
 
             var pet = await _dataContext.Pets
                 .Include(p => p.Owner)
-                .ThenInclude(o => o.User)
+                .ThenInclude(p => p.User)
+                .Include(p => p.PetType)
                 .Include(p => p.Histories)
-                .ThenInclude(h => h.ServiceType)
-                .FirstOrDefaultAsync(o => o.Id == id.Value);
+                .ThenInclude(p => p.ServiceType)
+                .FirstOrDefaultAsync(p => p.Id == id.Value);
             if (pet == null)
             {
                 return NotFound();
