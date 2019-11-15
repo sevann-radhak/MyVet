@@ -1,5 +1,8 @@
-﻿using MyVet.Common.Models;
+﻿using System;
+using MyVet.Common.Helpers;
+using MyVet.Common.Models;
 using MyVet.Common.Services;
+using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Navigation;
 
@@ -13,6 +16,8 @@ namespace MyVet.Prism.ViewModels
         private bool _isRunning;
         private bool _isEnabled;
         private DelegateCommand _loginCommand;
+        private DelegateCommand _registerCommand;
+        private DelegateCommand _forgotCommand;
 
         public LoginPageViewModel(
             INavigationService navigationService,
@@ -21,15 +26,22 @@ namespace MyVet.Prism.ViewModels
         {
             _navigationService = navigationService;
             _apiService = apiService;
-            Title = "My Vet - Login";
+            Title = "Sevann Veterinary - Login";
             IsEnabled = true;
+            IsRemember = true;
 
             //TODO: Delete default loging
-            Email = "jzuluaga55@hotmail.com";
-            Password = "123456";
+            //Email = "homero@correo.com";
+            //Password = "123456";
         }
 
         public DelegateCommand LoginCommand => _loginCommand ?? (_loginCommand = new DelegateCommand(Login));
+
+        public DelegateCommand RegisterCommand => _registerCommand ?? (_registerCommand = new DelegateCommand(Register));
+
+        public DelegateCommand ForgotPasswordCommand => _forgotCommand ?? (_forgotCommand = new DelegateCommand(ForgotPassword));
+
+        public bool IsRemember { get; set; }
 
         public string Email { get; set; }
 
@@ -104,22 +116,33 @@ namespace MyVet.Prism.ViewModels
                 IsRunning = false;
                 IsEnabled = true;
 
-                await App.Current.MainPage.DisplayAlert("Error", "This user has a big problem in BD. Call support", "Accept");
+                await App.Current.MainPage.DisplayAlert("Error", "This user has no permissions to performan this action!. Call support", "Accept");
                 return;
             }
 
             var owner = ownerRequest.Result;
 
-            var parameters = new NavigationParameters
-            {
-                { "owner", owner }
-            };
+            Settings.Owner = JsonConvert.SerializeObject(owner);
+            Settings.Token = JsonConvert.SerializeObject(token);
+            Settings.IsRemembered = IsRemember;
 
             IsRunning = false;
             IsEnabled = true;
 
             Password = string.Empty;
-            await _navigationService.NavigateAsync("PetsPage", parameters);
+            //await _navigationService.NavigateAsync("/VeterinaryMasterDetailPage/NavigationPage/PetsPage");
+            await _navigationService.NavigateAsync($"/VeterinaryMasterDetailPage/NavigationPage/PetsPage");
+            await _navigationService.NavigateAsync("PetsPage");
+        }
+
+        private async void Register()
+        {
+            await _navigationService.NavigateAsync("RegisterPage");
+        }
+
+        private async void ForgotPassword()
+        {
+            await _navigationService.NavigateAsync("RememberPasswordPage");
         }
     }
 }

@@ -4,6 +4,7 @@
              xmlns:prism="http://prismlibrary.com"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="MyVet.Prism.Views.LoginPage"
+             BackgroundColor="{StaticResource colorBackground}"
              Title="{Binding Title}">
 
     <ScrollView>
@@ -31,10 +32,40 @@
                     Placeholder="Enter your password"
                     Text="{Binding Password}"/>
 
-                  <Button
-                    IsEnabled="{Binding IsEnabled}"
-                    Command="{Binding LoginCommand}"
-                    Text="Login" />
+                <StackLayout
+	                HorizontalOptions="Center"
+	                Orientation="Horizontal">
+                    <Label
+    	                Text="Remember me in this device"
+                        VerticalOptions="Center"/>
+                    <CheckBox
+    	                IsChecked="{Binding IsRemember}"/>
+                </StackLayout>
+                <Label
+	                HorizontalOptions="Center"
+	                Text="Forgot your password?"
+	                TextColor="{StaticResource colorAccent}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ForgotPasswordCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+
+
+                <StackLayout
+                    Orientation="Horizontal"
+                    VerticalOptions="EndAndExpand">
+
+                    <Button
+                        IsEnabled="{Binding IsEnabled}"
+                        Command="{Binding LoginCommand}"
+                        Text="Login" />
+
+                    <Button
+                        IsEnabled="{Binding IsEnabled}"
+                        Command="{Binding RegisterCommand}"
+                        Style="{StaticResource SecondaryButton}"
+                        Text="Register" />
+                </StackLayout>
             </StackLayout>
 
             <ActivityIndicator

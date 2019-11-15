@@ -18,7 +18,7 @@ namespace MyVet.Common.Models
 
         public string Email { get; set; }
 
-        public string FullName => $"{FirstName}{LastName}";
+        public string FullName => $"{FirstName} {LastName}";
 
         public ICollection<PetResponse> Pets { get; set; }
     }
