@@ -1,5 +1,6 @@
 ﻿using MyVet.Common.Helpers;
 using MyVet.Common.Models;
+using MyVet.Common.Services;
 using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -13,14 +14,21 @@ namespace MyVet.Prism.ViewModels
 {
     public class ProfilePageViewModel : ViewModelBase
     {
-
+        private readonly INavigationService _navigationService;
+        private readonly ApiService _apiService;
         private OwnerResponse _owner;
         private bool _isEnabled;
         private bool _isRunning;
         private DelegateCommand _saveCommand;
+        private DelegateCommand _changePasswordCommand;
 
-        public ProfilePageViewModel(INavigationService navigationService) : base(navigationService)
+        public ProfilePageViewModel(
+            INavigationService navigationService,
+            ApiService apiService) : base(navigationService)
         {
+            _navigationService = navigationService;
+            _apiService = apiService;
+
             Title = "Modify Profile";
             IsEnabled = true;
             IsRunning = false;
@@ -28,6 +36,7 @@ namespace MyVet.Prism.ViewModels
         }
 
         public DelegateCommand SaveCommand => _saveCommand ?? (_saveCommand = new DelegateCommand(Save));
+        public DelegateCommand ChangePasswordCommand => _changePasswordCommand ?? (_changePasswordCommand = new DelegateCommand(ChangePassword));
 
         public OwnerResponse Owner
         {
@@ -54,6 +63,50 @@ namespace MyVet.Prism.ViewModels
             {
                 return;
             }
+
+            IsRunning = true;
+            IsEnabled = false;
+
+            UserRequest userRequest = new UserRequest
+            {
+                Address = Owner.Address,
+                Document = Owner.Document,
+                Email = Owner.Email,
+                FirstName = Owner.FirstName,
+                LastName = Owner.LastName,
+                Password = "123456", // It does not matter this value, it is just for sending a valid model
+                Phone = Owner.PhoneNumber
+            };
+
+            var token = JsonConvert.DeserializeObject<TokenResponse>(Settings.Token);
+
+            var url = App.Current.Resources["UrlAPI"].ToString();
+            var response = await _apiService.PutAsync<UserRequest>(
+                url,
+                "/api",
+                "/Account",
+                userRequest,
+                "bearer",
+                token.Token);
+
+            IsEnabled = true;
+            IsRunning = false;
+
+            if (!response.IsSuccess)
+            {
+                await App.Current.MainPage.DisplayAlert(
+                    "Error",
+                    response.Message,
+                    "Accept");
+                return;
+            }
+
+            Settings.Owner = JsonConvert.SerializeObject(Owner);
+            await App.Current.MainPage.DisplayAlert(
+                "Ok",
+                response.Message,
+                "Accept");
+            //await _navigationService.GoBackAsync();
         }
 
         private async Task<bool> ValidateData()
@@ -83,6 +136,11 @@ namespace MyVet.Prism.ViewModels
             }
 
             return true;
+        }
+
+        private async void ChangePassword()
+        {
+            await _navigationService.NavigateAsync("ChangePasswordPage");
         }
     }
 }

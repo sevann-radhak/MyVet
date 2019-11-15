@@ -130,9 +130,8 @@ namespace MyVet.Prism.ViewModels
             IsEnabled = true;
 
             Password = string.Empty;
-            //await _navigationService.NavigateAsync("/VeterinaryMasterDetailPage/NavigationPage/PetsPage");
             await _navigationService.NavigateAsync($"/VeterinaryMasterDetailPage/NavigationPage/PetsPage");
-            await _navigationService.NavigateAsync("PetsPage");
+            //await _navigationService.NavigateAsync("PetsPage");
         }
 
         private async void Register()
