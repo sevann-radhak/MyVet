@@ -21,5 +21,10 @@ namespace MyVet.Common.Models
         public string FullName => $"{FirstName} {LastName}";
 
         public ICollection<PetResponse> Pets { get; set; }
+
+        public double Latitude { get; set; }
+
+        public double Longitude { get; set; }
+
     }
 }
