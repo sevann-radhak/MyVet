@@ -2,127 +2,135 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="http://prismlibrary.com"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="MyVet.Prism.Views.AddEditPetPage"
              BackgroundColor="{StaticResource colorBackground}"
              Title="{Binding Title}">
 
-    <ScrollView>
-        <AbsoluteLayout>
-            <StackLayout
+    <StackLayout
+        Padding="10">
+        <ScrollView>
+            <AbsoluteLayout>
+                <StackLayout
             	AbsoluteLayout.LayoutBounds="0,0,1,1"
-            	AbsoluteLayout.LayoutFlags="All"
-        	    Padding="10">
+            	AbsoluteLayout.LayoutFlags="All">
 
-                <Image
-            	    HeightRequest="150"
-            	    Source="{Binding ImageSource}">
-                    
-                    <Image.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding ChangeImageCommand}"/>
-                    </Image.GestureRecognizers>
-                </Image>
+                    <ffimageloading:CachedImage
+                    Aspect="AspectFit"
+    	            Source="{Binding ImageSource}"
+    	            LoadingPlaceholder= "LoaderImage"
+    	            ErrorPlaceholder= "ErrorImage"
+    	            CacheDuration= "50"
+    	            RetryCount= "3"
+    	            RetryDelay= "600"
+    	            DownsampleToViewSize = "true">
+                        <ffimageloading:CachedImage.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ChangeImageCommand}"/>
+                        </ffimageloading:CachedImage.GestureRecognizers>
+                    </ffimageloading:CachedImage>
 
-                <Label
+                    <Label
             	    FontSize="Micro"
             	    HorizontalOptions="Center"
             	    Text="Tap on Image for changing it"/>
 
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-                    <Label
-                	    Grid.Column="0"
-                	    Grid.Row="0"
-                	    Text="Name"
-                	    VerticalOptions="Center"/>
-                    <Entry
-                	    Grid.Column="1"
-                	    Grid.Row="0"
-                	    Placeholder="NamePlaceHolder: Enter the pet's Name"
-                	    Text="{Binding Pet.Name}"/>
+                        <Label
+                	        Grid.Column="0"
+                	        Grid.Row="0"
+                	        Text="Name"
+                	        VerticalOptions="Center"/>
+                        <Entry
+                	        Grid.Column="1"
+                	        Grid.Row="0"
+                	        Placeholder="NamePlaceHolder: Enter the pet's Name"
+                	        Text="{Binding Pet.Name}"/>
 
-                    <Label
-                	    Grid.Column="0"
-                	    Grid.Row="1"
-                	    Text="Race"
-                	    VerticalOptions="Center"/>
-                    <Entry
-                	    Grid.Column="1"
-                	    Grid.Row="1"
-                	    Placeholder="RacePlaceHolder: Enter the pet's Race"
-                	    Text="{Binding Pet.Race}"/>
+                        <Label
+                	        Grid.Column="0"
+                	        Grid.Row="1"
+                	        Text="Race"
+                	        VerticalOptions="Center"/>
+                        <Entry
+                	        Grid.Column="1"
+                	        Grid.Row="1"
+                	        Placeholder="RacePlaceHolder: Enter the pet's Race"
+                	        Text="{Binding Pet.Race}"/>
 
-                    <Label
-                	    Grid.Column="0"
-                	    Grid.Row="2"
-                	    Text="PetType"
-                	    VerticalOptions="Center"/>
-                    <Picker
-                	    Grid.Column="1"
-                	    Grid.Row="2"
-                	    ItemDisplayBinding="{Binding Name}"
-                	    ItemsSource="{Binding PetTypes}"
-                	    SelectedItem="{Binding PetType}"
-                	    Title="PetType laceHolder: Enter the type of pet"/>
+                        <Label
+                	        Grid.Column="0"
+                	        Grid.Row="2"
+                	        Text="PetType"
+                	        VerticalOptions="Center"/>
+                        <Picker
+                	        Grid.Column="1"
+                	        Grid.Row="2"
+                	        ItemDisplayBinding="{Binding Name}"
+                	        ItemsSource="{Binding PetTypes}"
+                	        SelectedItem="{Binding PetType}"
+                	        Title="PetType laceHolder: Enter the type of pet"/>
 
-                    <Label
+                        <Label
                 	    Grid.Column="0"
                 	    Grid.Row="3"
                 	    Text="Born"
                 	    VerticalOptions="Center"/>
-                    <DatePicker
+                        <DatePicker
                 	    Grid.Column="1"
                 	    Grid.Row="3"
                 	    Date="{Binding Pet.Born}"/>
 
-                    <Label
-                	    Grid.Column="0"
-                	    Grid.Row="4"
-                	    Text="Remarks"
-                	    VerticalOptions="Center"/>
-                    <Editor
-                	    Grid.Column="1"
-                	    Grid.Row="4"
-                	    HeightRequest="80"
-                	    Text="{Binding Pet.Remarks}"/>
-                </Grid>
-
-                <StackLayout
-            	    Orientation="Horizontal"
-                    VerticalOptions="EndAndExpand">
-
-                    <Button
-                	    Command="{Binding SaveCommand}"
-                	    IsEnabled="{Binding IsEnabled}"
-                	    Text="Save"/>
-
-                    <Button
-                	    Command="{Binding DeleteCommand}"
-                	    IsEnabled="{Binding IsEnabled}"
-                	    IsVisible="{Binding IsEdit}"
-                	    Style="{StaticResource DangerButton}"
-                	    Text="Delete"/>
+                        <Label
+                	        Grid.Column="0"
+                	        Grid.Row="4"
+                	        Text="Remarks"
+                	        VerticalOptions="Center"/>
+                        <Editor
+                	        Grid.Column="1"
+                	        Grid.Row="4"
+                	        HeightRequest="120"
+                	        Text="{Binding Pet.Remarks}"/>
+                    </Grid>
                 </StackLayout>
-            </StackLayout>
 
-            <ActivityIndicator
-                AbsoluteLayout.LayoutBounds=".5,.5,.5,.5"
-                AbsoluteLayout.LayoutFlags="All"
-                HorizontalOptions="Center"
-                IsRunning="{Binding IsRunning}"
-                VerticalOptions="Center" />
+                <ActivityIndicator
+                    AbsoluteLayout.LayoutBounds=".5,.5,.5,.5"
+                    AbsoluteLayout.LayoutFlags="All"
+                    HorizontalOptions="Center"
+                    IsRunning="{Binding IsRunning}"
+                    VerticalOptions="Center" />
 
-        </AbsoluteLayout>
-    </ScrollView>
+            </AbsoluteLayout>
+        </ScrollView>
+
+        <StackLayout
+            Orientation="Horizontal"
+            VerticalOptions="EndAndExpand">
+
+            <Button
+                Command="{Binding SaveCommand}"
+                IsEnabled="{Binding IsEnabled}"
+                Text="Save"/>
+
+            <Button
+                Command="{Binding DeleteCommand}"
+                IsEnabled="{Binding IsEnabled}"
+                IsVisible="{Binding IsEdit}"
+                Style="{StaticResource DangerButton}"
+                Text="Delete"/>
+        </StackLayout>
+    </StackLayout>
 </ContentPage>
