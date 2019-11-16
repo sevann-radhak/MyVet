@@ -16,6 +16,7 @@ namespace MyVet.Prism.ViewModels
         private readonly INavigationService _navigationService;
         private OwnerResponse _owner;
         private ObservableCollection<PetItemViewModel> _pets;
+        private DelegateCommand _addPetCommand;
 
         public PetsPageViewModel(
             INavigationService navigationService)
@@ -26,10 +27,16 @@ namespace MyVet.Prism.ViewModels
             LoadOwner();
         }
 
+        public DelegateCommand AddPetCommand => _addPetCommand ?? (_addPetCommand = new DelegateCommand(AddPet));
+        
         public ObservableCollection<PetItemViewModel> Pets
         {
             get => _pets;
             set => SetProperty(ref _pets, value);
+        }
+        private async void AddPet()
+        {
+            await _navigationService.NavigateAsync("AddEditPetPage");
         }
 
         private void LoadOwner()

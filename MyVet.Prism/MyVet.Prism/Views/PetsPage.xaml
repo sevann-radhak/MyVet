@@ -8,7 +8,13 @@
              BackgroundColor="{StaticResource colorBackground}"
              Title="{Binding Title}">
 
-    <ScrollView>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem 
+            IconImageSource="ic_action_add_circle.png"
+            Command="{Binding AddPetCommand}"/>
+    </ContentPage.ToolbarItems>
+    
+    <ScrollView>        
         <StackLayout
         Padding="10">
             <ListView
