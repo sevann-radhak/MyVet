@@ -13,27 +13,27 @@
         <ScrollView>
             <AbsoluteLayout>
                 <StackLayout
-            	AbsoluteLayout.LayoutBounds="0,0,1,1"
-            	AbsoluteLayout.LayoutFlags="All">
+            	    AbsoluteLayout.LayoutBounds="0,0,1,1"
+            	    AbsoluteLayout.LayoutFlags="All">
 
                     <ffimageloading:CachedImage
-                    Aspect="AspectFit"
-    	            Source="{Binding ImageSource}"
-    	            LoadingPlaceholder= "LoaderImage"
-    	            ErrorPlaceholder= "ErrorImage"
-    	            CacheDuration= "50"
-    	            RetryCount= "3"
-    	            RetryDelay= "600"
-    	            DownsampleToViewSize = "true">
+                        Aspect="AspectFit"
+    	                Source="{Binding ImageSource}"
+    	                LoadingPlaceholder= "LoaderImage"
+    	                ErrorPlaceholder= "ErrorImage"
+    	                CacheDuration= "50"
+    	                RetryCount= "3"
+    	                RetryDelay= "600"
+    	                DownsampleToViewSize = "true">
                         <ffimageloading:CachedImage.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ChangeImageCommand}"/>
                         </ffimageloading:CachedImage.GestureRecognizers>
                     </ffimageloading:CachedImage>
 
                     <Label
-            	    FontSize="Micro"
-            	    HorizontalOptions="Center"
-            	    Text="Tap on Image for changing it"/>
+            	        FontSize="Micro"
+            	        HorizontalOptions="Center"
+            	        Text="Tap on Image for changing it"/>
 
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -84,14 +84,14 @@
                 	        Title="PetType laceHolder: Enter the type of pet"/>
 
                         <Label
-                	    Grid.Column="0"
-                	    Grid.Row="3"
-                	    Text="Born"
-                	    VerticalOptions="Center"/>
+                	        Grid.Column="0"
+                	        Grid.Row="3"
+                	        Text="Born"
+                	        VerticalOptions="Center"/>
                         <DatePicker
-                	    Grid.Column="1"
-                	    Grid.Row="3"
-                	    Date="{Binding Pet.Born}"/>
+                	        Grid.Column="1"
+                	        Grid.Row="3"
+                	        Date="{Binding Pet.Born}"/>
 
                         <Label
                 	        Grid.Column="0"

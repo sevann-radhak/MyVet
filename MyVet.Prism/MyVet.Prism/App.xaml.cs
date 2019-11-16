@@ -58,6 +58,8 @@ namespace MyVet.Prism
             containerRegistry.RegisterForNavigation<RememberPasswordPage, RememberPasswordPageViewModel>();
             containerRegistry.RegisterForNavigation<ChangePasswordPage, ChangePasswordPageViewModel>();
             containerRegistry.RegisterForNavigation<AddEditPetPage, AddEditPetPageViewModel>();
+            containerRegistry.Register<IGeolocatorService, GeolocatorService>();
+
         }
     }
 }
